@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
+error_reporting(~E_DEPRECATED);
+require '../vendor/autoload.php';
 
-define('LARAVEL_START', microtime(true));
+$app = App\Application\Application::getInstance();
+$router = App\Application\Router::getInstance();
 
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
+// Load all routes
+$handle = opendir(__DIR__ . '/../routes');
+while (false !== ($file = readdir($handle))) {
+    if ($file == '.' || $file == '..') {
+        continue;
+    }
+    require_once __DIR__ . '/../routes/' . $file;
 }
+closedir($handle);
 
-// Register the Composer autoloader...
-require __DIR__.'/../vendor/autoload.php';
-
-// Bootstrap Laravel and handle the request...
-/** @var Application $app */
-$app = require_once __DIR__.'/../bootstrap/app.php';
-
-$app->handleRequest(Request::capture());
+$app->run();

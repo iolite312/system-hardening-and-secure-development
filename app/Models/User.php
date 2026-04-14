@@ -2,31 +2,35 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    public int $id;
+    public string $firstName;
+    public string $lastName;
+    public string $email;
+    public string $profilePicture;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public string $fullName {
+        get => "{$this->firstName} {$this->lastName}";
+    }
+
+    public function __construct($id, $firstName, $lastName, $email, $profilePicture)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->id = $id;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->profilePicture = $profilePicture;
+    }
+
+    public static function fromDatabase(array $user): self
+    {
+        return new self(
+            $user['id'],
+            $user['first_name'],
+            $user['last_name'],
+            $user['email'],
+            $user['profile_picture']
+        );
     }
 }
