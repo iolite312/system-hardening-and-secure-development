@@ -16,10 +16,10 @@ class LoginRepository extends DatabaseRepository
         $this->pdo = $this->getConnection();
     }
 
-    public function login(string $username, string $password)
+    public function login(string $email, string $password)
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :username');
-        $stmt->bindParam(':username', $username, \PDO::PARAM_STR);
+        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         if (empty($result)) {
