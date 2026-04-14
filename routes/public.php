@@ -14,3 +14,6 @@ $router->middleware(EnsureValidLogin::class, function () use ($router) {
     $router->get('/logout', [App\Controllers\LoginController::class, 'logout']);
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
 });
+    $router->get('/', [App\Controllers\HomeController::class, 'index']);
+    
+    $router->get('/addUser', [App\Controllers\UserController::class, 'index']);
