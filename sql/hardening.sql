@@ -37,25 +37,6 @@ CREATE TABLE `comics` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sessions`
---
-
-CREATE TABLE `sessions` (
-  `id` varchar(128) NOT NULL,
-  `data` text DEFAULT NULL,
-  `last_access` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
---
--- Dumping data for table `sessions`
---
-
-INSERT INTO `sessions` (`id`, `data`, `last_access`) VALUES
-('8aa5a5c2-900d-4c04-ab94-c0dbc76b7197', NULL, '2026-04-14 10:50:57');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
