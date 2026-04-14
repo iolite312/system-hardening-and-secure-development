@@ -16,7 +16,8 @@ public_html/storage
 public_html/hot
 
 storage/*.key
-.env
+#What is happening when im deleting line 20 in your next update?
+.env 
 Homestead.yaml
 Homestead.json
 /.vagrant
