@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Apr 14, 2026 at 10:53 AM
+-- Generation Time: Apr 14, 2026 at 11:20 AM
 -- Server version: 12.2.2-MariaDB-ubu2404
 -- PHP Version: 8.3.30
 
@@ -62,8 +62,17 @@ INSERT INTO `sessions` (`id`, `data`, `last_access`) VALUES
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`, `salt`) VALUES
+(1, 'admin@admin.com', '$2y$12$5gc4q7VcxVJVNAi4Pb0pLOV0ruPSr613ipowI2zZdjKWRm3Sxet3i', 'fsp5IKa5g0emc0KVIt1X'),
+(2, 'guest@guest.com', '$2y$12$bLuKxhzfEAGLIJ3wZ4s9/O0W7Xtj9yBis1sHT.qRBcHjW6B3lk3Nu', 'iD8iV6AlbBrVwqiMplTH');
 
 --
 -- Indexes for dumped tables
@@ -95,7 +104,7 @@ ALTER TABLE `comics`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
