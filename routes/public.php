@@ -21,7 +21,12 @@ $router->middleware(EnsureValidLogin::class, function () use ($router) {
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
     $router->post('/', [App\Controllers\HomeController::class, 'index']);
 });
+    $router->get('/comics', [App\Controllers\ComicController::class, 'index']);
+    $router->get('/comics/add', [App\Controllers\ComicController::class, 'create']);
+    $router->post('/comics', [App\Controllers\ComicController::class, 'store']);
 
-   
+    $router->get('/', [App\Controllers\HomeController::class, 'index']);
+    
+    $router->get('/addUser', [App\Controllers\UserController::class, 'index']);
 
  
