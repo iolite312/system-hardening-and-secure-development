@@ -22,9 +22,9 @@ class ComicController extends Controller
     {
         if (!empty($_POST['title'])) {
             $this->repo->create(
-                $_POST['title'],
                 $_POST['serie'] ?? null,
-                $_POST['number'] ?? null
+                $_POST['number'] ?? null,
+                $_POST['title'],
             );
         }
 

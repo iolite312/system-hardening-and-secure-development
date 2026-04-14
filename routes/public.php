@@ -19,7 +19,6 @@ $router->middleware(EnsureValidLogin::class, function () use ($router) {
         $router->get('/secure', [App\Controllers\HomeController::class, 'index']);
     }, [[RolesEnum::ADMIN, RolesEnum::GUEST]]);
 
-    $router->get('/comics', [App\Controllers\ComicController::class, 'index']);
     $router->get('/comics/add', [App\Controllers\ComicController::class, 'create']);
     $router->post('/comics', [App\Controllers\ComicController::class, 'store']);
 });
