@@ -3,24 +3,29 @@
 namespace App\Controllers;
 use App\Repositories\ComicRepository;
 
-class ComicController
+class ComicController extends Controller
 {
     private ComicRepository $repo;
 
     public function __construct()
     {
+        parent::__construct();
         $this->repo = new ComicRepository();
     }
 
     public function create()
     {
-        require __DIR__ . '/../views/addComics.php';
+        return $this->pageLoader->setLayout('main')->setPage('addComics')->render(['page' => 'Add Comic']);
     }
 
     public function store()
     {
         if (!empty($_POST['title'])) {
-            $this->repo->create($_POST['title']);
+            $this->repo->create(
+                $_POST['title'],
+                $_POST['serie'] ?? null,
+                $_POST['number'] ?? null
+            );
         }
 
         header('Location: /comics');

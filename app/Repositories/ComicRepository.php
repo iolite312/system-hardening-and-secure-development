@@ -12,11 +12,17 @@ class ComicRepository extends DatabaseRepository
         $this->pdo = $this->getConnection();
     }
 
-    public function create(string $title): void
+    public function create(string $title, ?string $serie, ?int $number): void
     {
-        $stmt = $this->pdo->prepare("INSERT INTO comics (title) VALUES (:title)");
+        $stmt = $this->pdo->prepare("
+        INSERT INTO comics (title, serie, number)
+        VALUES (:title, :serie, :number)
+    ");
+
         $stmt->execute([
-            'title' => $title
+            'title' => $title,
+            'serie' => $serie,
+            'number' => $number
         ]);
     }
 }
