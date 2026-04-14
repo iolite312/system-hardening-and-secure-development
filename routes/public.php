@@ -16,3 +16,4 @@ $router->middleware(EnsureValidLogin::class, function () use ($router) {
 });
 
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
+ 
