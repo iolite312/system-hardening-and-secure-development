@@ -1,11 +1,6 @@
 <h1><?= $page ?></h1>
 
-<form method="POST" action="/add-user">
-    <div>
-        <label>Naam</label>
-        <input type="text" name="name" required>
-    </div>
-
+<form method="POST" action="/addUser">
     <div>
         <label>Email</label>
         <input type="email" name="email" required>
