@@ -25,9 +25,11 @@ class LoginController extends Controller
 
     public function login()
     {
-        $username = Request::getPostField('email');
+        $email = Request::getPostField('email');
         $password = Request::getPostField('password');
-        $result = $this->loginRepository->login($username, $password);
+        $result = $this->loginRepository->login($email, $password);
+        // var_dump($email, $password, $result);
+        // die();
         if ($result === ResponseEnum::SUCCESS) {
             Response::redirect('/');
         } else {
