@@ -6,6 +6,7 @@ use App\Enums\ResponseEnum;
 use App\Application\Request;
 use App\Application\Session;
 use App\Application\Response;
+use App\Helpers\PasswordGenerator;
 use App\Repositories\LoginRepository;
 
 class LoginController extends Controller
@@ -25,9 +26,9 @@ class LoginController extends Controller
 
     public function login()
     {
-        $username = Request::getPostField('email');
+        $email = Request::getPostField('email');
         $password = Request::getPostField('password');
-        $result = $this->loginRepository->login($username, $password);
+        $result = $this->loginRepository->login($email, $password);
         if ($result === ResponseEnum::SUCCESS) {
             Response::redirect('/');
         } else {
