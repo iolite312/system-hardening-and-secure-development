@@ -7,8 +7,17 @@ class PasswordGenerator
     public static function hashPassword($password)
     {
         $salt = StringGenerator::generateRandomString();
-        $password = password_hash($password . $salt, PASSWORD_BCRYPT, ['cost' => 12]);
 
-        return ['password' => $password, 'salt' => $salt];
+        $hash = password_hash(
+            $password . $salt,
+            PASSWORD_ARGON2ID,
+            [
+                'memory_cost' => 65536, // 64 MB
+                'time_cost' => 4,     // iterations
+                'threads' => 2,     // parallelism
+            ]
+        );
+
+        return ['password' => $hash, 'salt' => $salt];
     }
 }

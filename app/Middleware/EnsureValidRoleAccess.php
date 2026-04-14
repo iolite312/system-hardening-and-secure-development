@@ -4,33 +4,27 @@ namespace App\Middleware;
 
 use App\Application\Request;
 use App\Application\Session;
-use App\Repositories\AgendaRepository;
+use App\Repositories\LoginRepository;
 
 class EnsureValidRoleAccess implements MiddlewareInterface
 {
     private array $allowedRoles;
-    private AgendaRepository $agendaRepository;
+    private LoginRepository $loginRepository;
 
     public function __construct(array $allowedRoles = [])
     {
         $this->allowedRoles = $allowedRoles;
-        $this->agendaRepository = new AgendaRepository();
+        $this->loginRepository = new LoginRepository();
     }
 
     public function handle(): bool
     {
-        $id = Request::getParam('id');
-        $roles = Session::get('user_roles');
-
-        $userRole = array_filter($roles, fn ($role) => array_key_exists($id, $role));
-
-        // This is here to reset the index
-        $userRole = array_values($userRole);
+        $userRole = Session::get('user')->role;
 
         if (empty($this->allowedRoles)) {
             return true;
         }
 
-        return !in_array($userRole[0][$id], $this->allowedRoles, true);
+        return !in_array($userRole, $this->allowedRoles, true);
     }
 }
