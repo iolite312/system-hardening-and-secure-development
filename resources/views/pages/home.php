@@ -25,9 +25,9 @@
 
       <section class="pagination"> 
         <form action="" method="post">
-            <input type="submit" name="pagination" value="nxt" />
-            <?php echo $currentPage ?>
             <input type="submit" name="pagination" value="prev" />
+            <?php echo $currentPage ?>
+            <input type="submit" name="pagination" value="nxt" />
         </form>
     </section>
 </section>

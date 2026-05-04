@@ -20,7 +20,6 @@ class HomeController extends Controller
         parent::__construct();
         $this->bookRepository = new BookRepository();
         $this->books = $this->bookRepository->getAllComics();
-        // var_dump($_POST);
         if(isset($_POST->pagination)){
             echo $_POST->pagination;
         }
@@ -30,6 +29,8 @@ class HomeController extends Controller
     {
         return $this->pageLoader->setLayout('main')->setPage('home')->render(['page' => 'Home', 'books' => $this->books,'currentPage'=>$this->currentPage]);
     }
+
+    
 
     public function NextPage(){
 
