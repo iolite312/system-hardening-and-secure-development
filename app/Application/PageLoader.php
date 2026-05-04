@@ -2,6 +2,8 @@
 
 namespace App\Application;
 
+use App\Application\Session;
+
 class PageLoader
 {
     private string $layout = 'main';
@@ -24,6 +26,8 @@ class PageLoader
 
     public function render(array $parameters = []): string
     {
+        $parameters['user'] = Session::get('user');
+
         $layout = $this->loadView('layouts/' . $this->layout, $parameters);
         $page = $this->loadView('pages/' . $this->page, $parameters);
 

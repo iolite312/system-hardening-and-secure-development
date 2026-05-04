@@ -8,10 +8,10 @@ class Book{
 
     public function __construct(array $data)
     {
-        $this->id = $data['id'] ?? 0;
+        $this->id = (int) ($data['id'] ?? 0);
         $this->title = $data['title'] ?? '';
         $this->serie = $data['serie'] ?? '';
-        $this->number = $data['number'] ?? 0.0;
+        $this->number = (float) ($data['number'] ?? 0.0);
     }
 
 }
