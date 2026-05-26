@@ -1,27 +1,28 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
+# Node dependencies
+node_modules
 
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
+# Logs
+logs
+*.log
 
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
+# Misc
+.DS_Store
+.fleet
+.idea
 
-storage/*.key
-#What is happening when im deleting line 20 in your next update?
-.env 
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
-.php-cs-fixer.cache
-darkwolf
-blueberry
+# Local env files
+.env
+.env.*
+!.env.ci
+!.env.example
+
+terraform/.terraform
+terraform/state
