@@ -109,7 +109,13 @@ const columns = [
       </UButton>
     </div>
 
-    <UAlert v-if="error" color="error" variant="soft" :title="error.message" class="mb-4" />
+    <UAlert
+      v-if="error"
+      color="error"
+      variant="soft"
+      :title="error.message"
+      class="mb-4"
+    />
 
     <UCard>
       <UTable
@@ -142,29 +148,84 @@ const columns = [
       </UTable>
     </UCard>
 
-    <UModal v-model:open="open" title="Create user">
+    <UModal
+      v-model:open="open"
+      title="Create user"
+    >
       <template #body>
-        <UForm :schema="schema" :state="state" class="space-y-4" @submit="onCreate">
-          <UFormField label="Email" name="email" required>
-            <UInput v-model="state.email" type="email" autocomplete="off" class="w-full" />
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onCreate"
+        >
+          <UFormField
+            label="Email"
+            name="email"
+            required
+          >
+            <UInput
+              v-model="state.email"
+              type="email"
+              autocomplete="off"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField label="Name" name="name" required>
-            <UInput v-model="state.name" autocomplete="off" class="w-full" />
+          <UFormField
+            label="Name"
+            name="name"
+            required
+          >
+            <UInput
+              v-model="state.name"
+              autocomplete="off"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField label="Temporary password" name="password" required help="Minimum 8 characters">
-            <UInput v-model="state.password" type="password" autocomplete="new-password" class="w-full" />
+          <UFormField
+            label="Temporary password"
+            name="password"
+            required
+            help="Minimum 8 characters"
+          >
+            <UInput
+              v-model="state.password"
+              type="password"
+              autocomplete="new-password"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField label="Role" name="role" required>
-            <USelect v-model="state.role" :items="roleOptions" class="w-full" />
+          <UFormField
+            label="Role"
+            name="role"
+            required
+          >
+            <USelect
+              v-model="state.role"
+              :items="roleOptions"
+              class="w-full"
+            />
           </UFormField>
 
-          <UAlert v-if="submitError" color="error" variant="soft" :title="submitError" />
+          <UAlert
+            v-if="submitError"
+            color="error"
+            variant="soft"
+            :title="submitError"
+          />
 
           <div class="flex justify-end gap-2 pt-2">
-            <UButton variant="ghost" @click="open = false">
+            <UButton
+              variant="ghost"
+              @click="open = false"
+            >
               Cancel
             </UButton>
-            <UButton type="submit" :loading="submitting" color="primary">
+            <UButton
+              type="submit"
+              :loading="submitting"
+              color="primary"
+            >
               Create
             </UButton>
           </div>

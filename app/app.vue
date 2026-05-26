@@ -35,12 +35,21 @@ const navItems = computed(() => {
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/" class="flex items-center gap-2 font-semibold">
-          <UIcon name="i-lucide-book-open" class="size-6 text-primary" />
+        <NuxtLink
+          to="/"
+          class="flex items-center gap-2 font-semibold"
+        >
+          <UIcon
+            name="i-lucide-book-open"
+            class="size-6 text-primary"
+          />
           <span>Comic Library</span>
         </NuxtLink>
 
-        <nav v-if="user" class="hidden md:flex items-center gap-1 ml-6">
+        <nav
+          v-if="user"
+          class="hidden md:flex items-center gap-1 ml-6"
+        >
           <UButton
             v-for="item in navItems"
             :key="item.to"
@@ -58,7 +67,11 @@ const navItems = computed(() => {
       <template #right>
         <UColorModeButton />
         <template v-if="user">
-          <UBadge variant="soft" color="neutral" class="hidden sm:inline-flex">
+          <UBadge
+            variant="soft"
+            color="neutral"
+            class="hidden sm:inline-flex"
+          >
             {{ user.email }} · {{ user.role }}
           </UBadge>
           <UButton
@@ -69,7 +82,12 @@ const navItems = computed(() => {
             @click="logout"
           />
         </template>
-        <UButton v-else to="/login" color="primary" size="sm">
+        <UButton
+          v-else
+          to="/login"
+          color="primary"
+          size="sm"
+        >
           Sign in
         </UButton>
       </template>

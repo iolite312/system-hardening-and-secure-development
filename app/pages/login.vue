@@ -47,20 +47,47 @@ async function onSubmit(_event: FormSubmitEvent<Schema>) {
       <UCard>
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-book-open" class="size-6 text-primary" />
+            <UIcon
+              name="i-lucide-book-open"
+              class="size-6 text-primary"
+            />
             <h1 class="text-xl font-semibold">
               Sign in to Comic Library
             </h1>
           </div>
         </template>
 
-        <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-          <UFormField label="Email" name="email" required>
-            <UInput v-model="state.email" type="email" autocomplete="email" placeholder="you@example.com" class="w-full" />
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
+        >
+          <UFormField
+            label="Email"
+            name="email"
+            required
+          >
+            <UInput
+              v-model="state.email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              class="w-full"
+            />
           </UFormField>
 
-          <UFormField label="Password" name="password" required>
-            <UInput v-model="state.password" type="password" autocomplete="current-password" class="w-full" />
+          <UFormField
+            label="Password"
+            name="password"
+            required
+          >
+            <UInput
+              v-model="state.password"
+              type="password"
+              autocomplete="current-password"
+              class="w-full"
+            />
           </UFormField>
 
           <UAlert
@@ -71,7 +98,11 @@ async function onSubmit(_event: FormSubmitEvent<Schema>) {
             :title="submitError"
           />
 
-          <UButton type="submit" :loading="loading" block>
+          <UButton
+            type="submit"
+            :loading="loading"
+            block
+          >
             Sign in
           </UButton>
         </UForm>

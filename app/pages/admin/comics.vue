@@ -161,16 +161,31 @@ const columns = [
         </p>
       </div>
       <div class="flex gap-2">
-        <UButton icon="i-lucide-upload" color="neutral" variant="soft" @click="openImport">
+        <UButton
+          icon="i-lucide-upload"
+          color="neutral"
+          variant="soft"
+          @click="openImport"
+        >
           Import CSV
         </UButton>
-        <UButton icon="i-lucide-plus" color="primary" @click="openCreate">
+        <UButton
+          icon="i-lucide-plus"
+          color="primary"
+          @click="openCreate"
+        >
           Add comic
         </UButton>
       </div>
     </div>
 
-    <UAlert v-if="error" color="error" variant="soft" :title="error.message" class="mb-4" />
+    <UAlert
+      v-if="error"
+      color="error"
+      variant="soft"
+      :title="error.message"
+      class="mb-4"
+    />
 
     <UCard>
       <UTable
@@ -184,7 +199,12 @@ const columns = [
         </template>
         <template #actions-cell="{ row }">
           <div class="flex justify-end gap-1">
-            <UButton variant="ghost" size="xs" icon="i-lucide-pencil" @click="openEdit(row.original)" />
+            <UButton
+              variant="ghost"
+              size="xs"
+              icon="i-lucide-pencil"
+              @click="openEdit(row.original)"
+            />
             <UButton
               v-if="can('comic:delete')"
               variant="ghost"
@@ -198,7 +218,10 @@ const columns = [
       </UTable>
     </UCard>
 
-    <UModal v-model:open="importOpen" title="Import comics from CSV">
+    <UModal
+      v-model:open="importOpen"
+      title="Import comics from CSV"
+    >
       <template #body>
         <div class="space-y-4">
           <UAlert
@@ -217,14 +240,25 @@ const columns = [
               class="block w-full text-sm file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:bg-primary-500 file:text-white file:cursor-pointer"
               @change="onFileChange"
             >
-            <p v-if="importFile" class="text-xs text-muted mt-1">
+            <p
+              v-if="importFile"
+              class="text-xs text-muted mt-1"
+            >
               {{ importFile.name }} · {{ (importFile.size / 1024).toFixed(1) }} KB
             </p>
           </div>
 
-          <UAlert v-if="importError" color="error" variant="soft" :title="importError" />
+          <UAlert
+            v-if="importError"
+            color="error"
+            variant="soft"
+            :title="importError"
+          />
 
-          <div v-if="importResult" class="space-y-2">
+          <div
+            v-if="importResult"
+            class="space-y-2"
+          >
             <div class="grid grid-cols-3 gap-2 text-center">
               <UCard>
                 <p class="text-xs text-muted">
@@ -246,13 +280,19 @@ const columns = [
                 <p class="text-xs text-muted">
                   Failed
                 </p>
-                <p class="text-xl font-semibold" :class="importResult.failed ? 'text-error' : ''">
+                <p
+                  class="text-xl font-semibold"
+                  :class="importResult.failed ? 'text-error' : ''"
+                >
                   {{ importResult.failed }}
                 </p>
               </UCard>
             </div>
 
-            <div v-if="importResult.errors.length" class="max-h-64 overflow-auto border rounded">
+            <div
+              v-if="importResult.errors.length"
+              class="max-h-64 overflow-auto border rounded"
+            >
               <table class="w-full text-xs">
                 <thead class="bg-muted/50 sticky top-0">
                   <tr>
@@ -265,7 +305,11 @@ const columns = [
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(e, i) in importResult.errors" :key="i" class="border-t">
+                  <tr
+                    v-for="(e, i) in importResult.errors"
+                    :key="i"
+                    class="border-t"
+                  >
                     <td class="p-2 font-mono">
                       {{ e.row > 0 ? e.row : '—' }}
                     </td>
@@ -275,14 +319,20 @@ const columns = [
                   </tr>
                 </tbody>
               </table>
-              <p v-if="importResult.truncatedErrors" class="p-2 text-xs text-muted bg-muted/30">
+              <p
+                v-if="importResult.truncatedErrors"
+                class="p-2 text-xs text-muted bg-muted/30"
+              >
                 More errors omitted from this report.
               </p>
             </div>
           </div>
 
           <div class="flex justify-end gap-2 pt-2">
-            <UButton variant="ghost" @click="importOpen = false">
+            <UButton
+              variant="ghost"
+              @click="importOpen = false"
+            >
               Close
             </UButton>
             <UButton
@@ -299,26 +349,68 @@ const columns = [
       </template>
     </UModal>
 
-    <UModal v-model:open="open" :title="editing ? 'Edit comic' : 'Add comic'">
+    <UModal
+      v-model:open="open"
+      :title="editing ? 'Edit comic' : 'Add comic'"
+    >
       <template #body>
-        <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-          <UFormField label="Title" name="title" required>
-            <UInput v-model="state.title" class="w-full" />
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
+        >
+          <UFormField
+            label="Title"
+            name="title"
+            required
+          >
+            <UInput
+              v-model="state.title"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField label="Series" name="serie" required>
-            <UInput v-model="state.serie" class="w-full" />
+          <UFormField
+            label="Series"
+            name="serie"
+            required
+          >
+            <UInput
+              v-model="state.serie"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField label="Number" name="number" required help="Issue or volume number">
-            <UInput v-model="state.number" class="w-full" />
+          <UFormField
+            label="Number"
+            name="number"
+            required
+            help="Issue or volume number"
+          >
+            <UInput
+              v-model="state.number"
+              class="w-full"
+            />
           </UFormField>
 
-          <UAlert v-if="submitError" color="error" variant="soft" :title="submitError" />
+          <UAlert
+            v-if="submitError"
+            color="error"
+            variant="soft"
+            :title="submitError"
+          />
 
           <div class="flex justify-end gap-2 pt-2">
-            <UButton variant="ghost" @click="open = false">
+            <UButton
+              variant="ghost"
+              @click="open = false"
+            >
               Cancel
             </UButton>
-            <UButton type="submit" :loading="submitting" color="primary">
+            <UButton
+              type="submit"
+              :loading="submitting"
+              color="primary"
+            >
               {{ editing ? 'Save' : 'Create' }}
             </UButton>
           </div>

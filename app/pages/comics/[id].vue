@@ -34,15 +34,28 @@ async function onDelete() {
 
 <template>
   <UContainer class="py-8">
-    <UButton to="/comics" variant="ghost" icon="i-lucide-arrow-left" class="mb-4">
+    <UButton
+      to="/comics"
+      variant="ghost"
+      icon="i-lucide-arrow-left"
+      class="mb-4"
+    >
       Back
     </UButton>
 
-    <UAlert v-if="error" color="error" variant="soft" :title="error.message" />
+    <UAlert
+      v-if="error"
+      color="error"
+      variant="soft"
+      :title="error.message"
+    />
 
     <UCard v-if="data?.comic">
       <div class="flex items-start gap-4">
-        <UIcon name="i-lucide-book" class="size-12 text-primary shrink-0" />
+        <UIcon
+          name="i-lucide-book"
+          class="size-12 text-primary shrink-0"
+        />
         <div class="flex-1">
           <h1 class="text-3xl font-semibold">
             {{ data.comic.title }}
@@ -90,11 +103,25 @@ async function onDelete() {
         </div>
       </dl>
 
-      <div v-if="can('comic:update') || can('comic:delete')" class="mt-8 flex gap-2">
-        <UButton v-if="can('comic:update')" to="/admin/comics" icon="i-lucide-pencil" variant="soft">
+      <div
+        v-if="can('comic:update') || can('comic:delete')"
+        class="mt-8 flex gap-2"
+      >
+        <UButton
+          v-if="can('comic:update')"
+          to="/admin/comics"
+          icon="i-lucide-pencil"
+          variant="soft"
+        >
           Edit in admin
         </UButton>
-        <UButton v-if="can('comic:delete')" color="error" variant="soft" icon="i-lucide-trash-2" @click="onDelete">
+        <UButton
+          v-if="can('comic:delete')"
+          color="error"
+          variant="soft"
+          icon="i-lucide-trash-2"
+          @click="onDelete"
+        >
           Delete
         </UButton>
       </div>
