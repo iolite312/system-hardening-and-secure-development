@@ -23,3 +23,6 @@ logs
 .env.*
 !.env.ci
 !.env.example
+
+terraform/.terraform
+terraform/state
