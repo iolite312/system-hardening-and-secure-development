@@ -23,7 +23,7 @@ export async function getUserFromEvent(event: H3Event): Promise<AuthedUser | nul
   const db = useDb()
   const [user] = await db.select().from(schema.users).where(eq(schema.users.id, payload.sub)).limit(1)
   if (!user) return null
-  return { id: user.id, email: user.email, name: user.name, role: user.role }
+  return { id: user.id, email: user.email, name: user.name, role: user.role as UserRole }
 }
 
 export async function requireUser(event: H3Event): Promise<AuthedUser> {

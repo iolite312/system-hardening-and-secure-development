@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' })
   }
 
-  const access = await signAccessToken({ sub: user.id, role: user.role, email: user.email })
+  const access = await signAccessToken({ sub: user.id, role: user.role as UserRole, email: user.email })
   const { token: refreshToken, hash: refreshHash } = generateRefreshToken()
   const expiresAt = new Date(Date.now() + refreshTtl() * 1000)
 

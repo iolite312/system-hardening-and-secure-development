@@ -65,10 +65,10 @@ export default defineEventHandler(async (event) => {
 
   await db
     .update(schema.refreshTokens)
-    .set({ revokedAt: new Date(), replacedById: inserted.id })
+    .set({ revokedAt: new Date(), replacedById: inserted?.id })
     .where(eq(schema.refreshTokens.id, row.id))
 
-  const access = await signAccessToken({ sub: user.id, role: user.role, email: user.email })
+  const access = await signAccessToken({ sub: user.id, role: user.role as UserRole, email: user.email })
   setAuthCookies(event, access, newToken)
 
   return {

@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
   const offset = (page - 1) * limit
   const db = useDb()
 
+  // @ts-ignore
   const [{ total }] = await db.select({ total: count() }).from(schema.comics)
   const comics = await db
     .select()
