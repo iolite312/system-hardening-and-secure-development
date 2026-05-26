@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   const offset = (page - 1) * limit
   const db = useDb()
 
-  // @ts-expect-error weird typing error in typescript
+  // @ts-expect-error weird typing error in TypeScript
   const [{ total }] = await db.select({ total: count() }).from(schema.comics)
   const comics = await db
     .select()
