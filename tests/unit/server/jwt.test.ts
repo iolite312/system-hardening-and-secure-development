@@ -1,18 +1,25 @@
 // @vitest-environment node
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+
+const config = {
+  jwtAccessSecret: 'test-access-secret-that-is-at-least-32-characters-long!',
+  jwtRefreshSecret: 'test-refresh-secret-that-is-at-least-32-characters-long!',
+  jwtAccessTtl: 900,
+  jwtRefreshTtl: 604800
+}
+
+// Mock the config wrapper so useRuntimeConfig() is never called
+// (it requires a live Nuxt app instance which isn't present in node tests).
+vi.mock('../../../server/utils/config', () => ({
+  useConfig: () => config
+}))
+
 import {
   signAccessToken,
   verifyAccessToken,
   generateRefreshToken,
   hashRefreshToken
 } from '../../../server/utils/jwt'
-
-beforeAll(() => {
-  // Minimum env required by the JWT utils.
-  process.env.JWT_ACCESS_SECRET = 'test-access-secret-that-is-at-least-32-characters-long!'
-  process.env.JWT_ACCESS_TTL = '900'
-  process.env.JWT_REFRESH_TTL = '604800'
-})
 
 describe('signAccessToken / verifyAccessToken', () => {
   const payload = { sub: 'user-123', role: 'admin' as const, email: 'test@example.com' }
@@ -33,10 +40,12 @@ describe('signAccessToken / verifyAccessToken', () => {
 
   it('rejects a token signed with a different secret', async () => {
     const token = await signAccessToken(payload)
-    const original = process.env.JWT_ACCESS_SECRET
-    process.env.JWT_ACCESS_SECRET = 'a-completely-different-secret-that-is-also-long-enough!'
+    vi.mocked(await import('../../../server/utils/config')).useConfig = () => ({
+      ...config,
+      jwtAccessSecret: 'a-completely-different-secret-that-is-also-long-enough!'
+    })
     await expect(verifyAccessToken(token)).rejects.toThrow()
-    process.env.JWT_ACCESS_SECRET = original
+    vi.mocked(await import('../../../server/utils/config')).useConfig = () => config
   })
 
   it('rejects a tampered payload', async () => {

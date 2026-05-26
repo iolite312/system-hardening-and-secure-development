@@ -1,6 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { randomBytes, createHash } from 'node:crypto'
 import type { UserRole } from '~~/shared/types/rbac'
+import { useConfig } from './config'
 
 export interface AccessTokenPayload {
   sub: string
@@ -9,17 +10,18 @@ export interface AccessTokenPayload {
 }
 
 function getAccessSecret(): Uint8Array {
-  const s = process.env.JWT_ACCESS_SECRET
-  if (!s || s.length < 32) throw new Error('JWT_ACCESS_SECRET must be set (>=32 chars)')
-  return new TextEncoder().encode(s)
+  const config = useConfig()
+  if (!config.jwtAccessSecret || config.jwtAccessSecret.length < 32)
+    throw new Error('jwtAccessSecret must be set (>=32 chars)')
+  return new TextEncoder().encode(config.jwtAccessSecret)
 }
 
 function accessTtl(): number {
-  return Number(process.env.JWT_ACCESS_TTL ?? 900)
+  return useConfig().jwtAccessTtl
 }
 
 export function refreshTtl(): number {
-  return Number(process.env.JWT_REFRESH_TTL ?? 60 * 60 * 24 * 7)
+  return useConfig().jwtRefreshTtl
 }
 
 export async function signAccessToken(payload: AccessTokenPayload): Promise<string> {

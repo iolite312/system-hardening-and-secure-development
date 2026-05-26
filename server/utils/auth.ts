@@ -3,6 +3,7 @@ import type { H3Event } from 'h3'
 import { useDb, schema } from '../db'
 import { verifyAccessToken, type AccessTokenPayload } from './jwt'
 import { hasPermission } from './rbac'
+import { useConfig } from './config'
 import type { Permission } from '~~/shared/types/rbac'
 import type { AuthUser } from '~~/shared/types/auth'
 
@@ -43,23 +44,20 @@ export async function requirePermission(event: H3Event, perm: Permission): Promi
 }
 
 export function setAuthCookies(event: H3Event, accessToken: string, refreshToken: string) {
-  const isProd = process.env.NODE_ENV === 'production'
-  const accessTtl = Number(process.env.JWT_ACCESS_TTL ?? 900)
-  const refreshTtl = Number(process.env.JWT_REFRESH_TTL ?? 60 * 60 * 24 * 7)
-
+  const config = useConfig()
   setCookie(event, ACCESS_COOKIE, accessToken, {
     httpOnly: true,
-    secure: isProd,
+    secure: !import.meta.dev,
     sameSite: 'strict',
     path: '/',
-    maxAge: accessTtl
+    maxAge: config.jwtAccessTtl
   })
   setCookie(event, REFRESH_COOKIE, refreshToken, {
     httpOnly: true,
-    secure: isProd,
+    secure: !import.meta.dev,
     sameSite: 'strict',
     path: '/api/auth',
-    maxAge: refreshTtl
+    maxAge: config.jwtRefreshTtl
   })
 }
 
