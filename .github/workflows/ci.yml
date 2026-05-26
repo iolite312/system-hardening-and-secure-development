@@ -32,3 +32,9 @@ jobs:
 
       - name: Typecheck
         run: pnpm run typecheck
+
+      - name: Load CI environment
+        run: grep -v '^\s*#' .env.ci | sed 's/\s*#.*//' | grep '=' >> $GITHUB_ENV
+
+      - name: Unit tests
+        run: pnpm vitest run tests/unit
