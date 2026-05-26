@@ -1,6 +1,13 @@
 // @vitest-environment node
 import { describe, it, expect, vi } from 'vitest'
 
+import {
+  signAccessToken,
+  verifyAccessToken,
+  generateRefreshToken,
+  hashRefreshToken
+} from '../../../server/utils/jwt'
+
 const config = {
   jwtAccessSecret: 'test-access-secret-that-is-at-least-32-characters-long!',
   jwtRefreshSecret: 'test-refresh-secret-that-is-at-least-32-characters-long!',
@@ -13,13 +20,6 @@ const config = {
 vi.mock('../../../server/utils/config', () => ({
   useConfig: () => config
 }))
-
-import {
-  signAccessToken,
-  verifyAccessToken,
-  generateRefreshToken,
-  hashRefreshToken
-} from '../../../server/utils/jwt'
 
 describe('signAccessToken / verifyAccessToken', () => {
   const payload = { sub: 'user-123', role: 'admin' as const, email: 'test@example.com' }
