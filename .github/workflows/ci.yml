@@ -45,6 +45,16 @@ jobs:
           exit-code: 1
           severity: CRITICAL,HIGH
 
+      - name: Build Image
+        run: docker build -t system-hardening-and-secure-development:latest .
+
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@v0.20.0
+        with:
+          image-ref: "system-hardening-and-secure-development:latest"
+          severity: "HIGH,CRITICAL"
+          exit-code: "1"
+
       - name: Checkov (IaC scan)
         uses: bridgecrewio/checkov-action@v12
         with:
