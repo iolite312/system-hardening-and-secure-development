@@ -26,9 +26,15 @@ ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
+# Create non-root user and group
+RUN addgroup -S nodejs && adduser -S nuxt -G nodejs
+
 # Copy built output from builder
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package*.json ./
+
+# Switch to non-root user
+USER nuxt
 
 # Expose Nuxt port
 EXPOSE 3000
