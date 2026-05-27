@@ -21,23 +21,20 @@ FROM node:24-alpine AS runner
 
 WORKDIR /app
 
-# Set production environment
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Create non-root user and group
 RUN addgroup -S nodejs && adduser -S nuxt -G nodejs
 
-# Copy built output from builder
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package*.json ./
 
-# Switch to non-root user
 USER nuxt
 
-# Expose Nuxt port
 EXPOSE 3000
 
-# Start Nuxt server
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/ || exit 1
+
 CMD ["node", ".output/server/index.mjs"]

@@ -44,9 +44,16 @@ resource "kubernetes_deployment" "postgres" {
       }
 
       spec {
+
+        security_context {
+          run_as_non_root = true
+          fs_group        = 999
+        }
+
         container {
-          name  = "postgres"
-          image = "postgres:17-alpine"
+          name              = "postgres"
+          image             = "postgres:17.5-alpine"
+          image_pull_policy = "Always"
 
           port {
             container_port = 5432
@@ -65,6 +72,53 @@ resource "kubernetes_deployment" "postgres" {
           env {
             name  = "POSTGRES_PASSWORD"
             value = var.postgres_password
+          }
+
+          resources {
+            requests = {
+              cpu    = "100m"
+              memory = "128Mi"
+            }
+
+            limits = {
+              cpu    = "500m"
+              memory = "512Mi"
+            }
+          }
+
+          security_context {
+            allow_privilege_escalation = false
+            read_only_root_filesystem  = false
+
+            capabilities {
+              drop = ["NET_RAW"]
+            }
+          }
+
+          readiness_probe {
+            exec {
+              command = [
+                "sh",
+                "-c",
+                "pg_isready -U ${var.postgres_user}"
+              ]
+            }
+
+            initial_delay_seconds = 10
+            period_seconds        = 10
+          }
+
+          liveness_probe {
+            exec {
+              command = [
+                "sh",
+                "-c",
+                "pg_isready -U ${var.postgres_user}"
+              ]
+            }
+
+            initial_delay_seconds = 30
+            period_seconds        = 20
           }
 
           volume_mount {
@@ -126,8 +180,15 @@ resource "kubernetes_deployment" "fullstack" {
       }
 
       spec {
+
+        security_context {
+          run_as_non_root = true
+        }
+
         container {
-          name              = "fullstack"
+          name = "fullstack"
+
+          # Use fixed version tag
           image             = var.image
           image_pull_policy = "Never"
 
@@ -173,6 +234,47 @@ resource "kubernetes_deployment" "fullstack" {
           env {
             name  = "SEED_SUPERADMIN_NAME"
             value = var.seed_superadmin_name
+          }
+
+          resources {
+            requests = {
+              cpu    = "100m"
+              memory = "128Mi"
+            }
+
+            limits = {
+              cpu    = "500m"
+              memory = "512Mi"
+            }
+          }
+
+          security_context {
+            allow_privilege_escalation = false
+            read_only_root_filesystem  = false
+
+            capabilities {
+              drop = ["NET_RAW"]
+            }
+          }
+
+          readiness_probe {
+            http_get {
+              path = "/"
+              port = 3000
+            }
+
+            initial_delay_seconds = 10
+            period_seconds        = 10
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 3000
+            }
+
+            initial_delay_seconds = 30
+            period_seconds        = 20
           }
         }
       }
