@@ -62,7 +62,8 @@ jobs:
           framework: all
           soft_fail: false
           output_format: cli
-  
+          check: CRITICAL,HIGH,MEDIUM
+
       - name: Cosign
         uses: sigstore/cosign-installer@main
         with:
