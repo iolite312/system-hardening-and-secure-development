@@ -62,3 +62,8 @@ jobs:
           framework: all
           soft_fail: false
           output_format: cli
+  
+      - name: Cosign
+        uses: sigstore/cosign-installer@main
+        with:
+          cosign-release: "v3.0.2"
