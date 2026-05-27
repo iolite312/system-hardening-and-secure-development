@@ -27,14 +27,14 @@ jobs:
         run: pnpm vitest run tests/unit
 
       - name: Trivy (filesystem scan)
-              uses: aquasecurity/trivy-action@0.30.0
-              with:
-                scan-type: fs
-                scan-ref: .
-                format: table
-                exit-code: 1
-                severity: CRITICAL,HIGH
-                ignore-unfixed: true
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          exit-code: 1
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
 
       - name: Trivy (Dockerfile scan)
         uses: aquasecurity/trivy-action@0.30.0
