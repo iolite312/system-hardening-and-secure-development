@@ -1,0 +1,10 @@
+node_modules
+.nuxt
+.output
+.git
+.vscode
+dist
+coverage
+npm-debug.log
+Dockerfile
+.dockerignore
