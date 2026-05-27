@@ -46,12 +46,12 @@ jobs:
           severity: CRITICAL,HIGH
 
       - name: Build Image
-        run: docker build -t system-hardening-and-secure-development:latest .
+        run: docker build -t system-hardening-and-secure-development:${{ github.sha }} .
 
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@v0.20.0
         with:
-          image-ref: "system-hardening-and-secure-development:latest"
+          image-ref: "system-hardening-and-secure-development:${{ github.sha }}"
           severity: "HIGH,CRITICAL"
           exit-code: "1"
 
