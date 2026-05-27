@@ -80,26 +80,42 @@ The app is available at [http://localhost:3000](http://localhost:3000).
 These match the defaults in `.env.example`. **Change them before deploying.**
 
 | Role        | Email             | Password               |
-|-------------|-------------------|------------------------|
+| ----------- | ----------------- | ---------------------- |
 | Super Admin | admin@example.com | ChangeMe!SuperAdmin123 |
 
 Additional accounts can be created through the **Users** admin panel once logged in.
 
 ---
 
+## Terraform commands
+
+terraform plan
+
+```bash
+terraform plan -var-file="envs/dev.tfvars"
+```
+
+terraform apply
+
+```bash
+terraform apply -var-file="envs/dev.tfvars"
+```
+
+---
+
 ## Roles & permissions
 
-| Permission        | Super Admin | Admin | Friend |
-|-------------------|:-----------:|:-----:|:------:|
-| View comics       |             |  ✓    |  ✓     |
-| Add comics        |             |  ✓    |        |
-| Edit comics       |             |  ✓    |        |
-| Delete comics     |             |  ✓    |        |
-| Bulk import CSV   |             |  ✓    |        |
-| List users        |  ✓          |  ✓    |        |
-| Create admin      |  ✓          |  ✓    |        |
-| Create friend     |             |  ✓    |        |
-| Delete users      |  ✓          |  ✓    |        |
+| Permission      | Super Admin | Admin | Friend |
+| --------------- | :---------: | :---: | :----: |
+| View comics     |             |   ✓   |   ✓    |
+| Add comics      |             |   ✓   |        |
+| Edit comics     |             |   ✓   |        |
+| Delete comics   |             |   ✓   |        |
+| Bulk import CSV |             |   ✓   |        |
+| List users      |      ✓      |   ✓   |        |
+| Create admin    |      ✓      |   ✓   |        |
+| Create friend   |             |   ✓   |        |
+| Delete users    |      ✓      |   ✓   |        |
 
 > Super admin manages users only — comic management is the admin's responsibility.  
 > Unauthenticated visitors are redirected to the login page and cannot see anything.
@@ -125,7 +141,7 @@ Watchmen #2,Watchmen,2
 ## Available scripts
 
 | Command            | Description                                   |
-|--------------------|-----------------------------------------------|
+| ------------------ | --------------------------------------------- |
 | `pnpm dev`         | Start development server                      |
 | `pnpm build`       | Build for production                          |
 | `pnpm preview`     | Preview production build locally              |
