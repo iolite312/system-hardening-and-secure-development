@@ -190,7 +190,7 @@ resource "kubernetes_deployment" "fullstack" {
 
           # Use fixed version tag
           image             = var.image
-          image_pull_policy = "Never"
+          # image_pull_policy = "Never"
 
           port {
             container_port = 3000

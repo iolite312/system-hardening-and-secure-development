@@ -86,3 +86,10 @@ variable "seed_superadmin_name" {
   type      = string
   sensitive = true
 }
+
+
+# vault vars
+variable "token_reviewer_jwt" {
+  type      = string
+  sensitive = true
+}

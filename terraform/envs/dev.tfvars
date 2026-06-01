@@ -1,6 +1,6 @@
 environment = "dev"
 
-image = "system-hardening-and-secure-development:v1"
+image = "ghcr.io/iolite312/system-hardening-and-secure-development:master"
 
 # Database config
 postgres_password        = "secret123"
