@@ -4,6 +4,14 @@ resource "kubernetes_namespace" "app" {
   }
 }
 
+# ServiceAccount lets the app pod authenticate to Vault using the Kubernetes auth method
+resource "kubernetes_service_account" "app" {
+  metadata {
+    name      = var.app_name
+    namespace = kubernetes_namespace.app.metadata[0].name
+  }
+}
+
 resource "kubernetes_persistent_volume_claim" "postgres" {
   metadata {
     name      = "postgres-pvc"
@@ -60,18 +68,33 @@ resource "kubernetes_deployment" "postgres" {
           }
 
           env {
-            name  = "POSTGRES_DB"
-            value = var.postgres_db
+            name = "POSTGRES_DB"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "POSTGRES_DB"
+              }
+            }
           }
 
           env {
-            name  = "POSTGRES_USER"
-            value = var.postgres_user
+            name = "POSTGRES_USER"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "POSTGRES_USER"
+              }
+            }
           }
 
           env {
-            name  = "POSTGRES_PASSWORD"
-            value = var.postgres_password
+            name = "POSTGRES_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "POSTGRES_PASSWORD"
+              }
+            }
           }
 
           resources {
@@ -95,13 +118,10 @@ resource "kubernetes_deployment" "postgres" {
             }
           }
 
+          # $(POSTGRES_USER) is expanded by sh at runtime from the env var set above
           readiness_probe {
             exec {
-              command = [
-                "sh",
-                "-c",
-                "pg_isready -U ${var.postgres_user}"
-              ]
+              command = ["sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
             }
 
             initial_delay_seconds = 10
@@ -110,11 +130,7 @@ resource "kubernetes_deployment" "postgres" {
 
           liveness_probe {
             exec {
-              command = [
-                "sh",
-                "-c",
-                "pg_isready -U ${var.postgres_user}"
-              ]
+              command = ["sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
             }
 
             initial_delay_seconds = 30
@@ -180,15 +196,14 @@ resource "kubernetes_deployment" "fullstack" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.app.metadata[0].name
 
         security_context {
           run_as_non_root = true
         }
 
         container {
-          name = "fullstack"
-
-          # Use fixed version tag
+          name              = "fullstack"
           image             = var.image
           image_pull_policy = "Never"
 
@@ -197,43 +212,83 @@ resource "kubernetes_deployment" "fullstack" {
           }
 
           env {
-            name  = "DATABASE_URL"
-            value = "postgres://${var.postgres_user}:${var.postgres_password}@postgres:5432/${var.postgres_db}"
+            name = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "DATABASE_URL"
+              }
+            }
           }
 
           env {
-            name  = "JWT_ACCESS_SECRET"
-            value = var.jwt_access_secret
+            name = "JWT_ACCESS_SECRET"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "JWT_ACCESS_SECRET"
+              }
+            }
           }
 
           env {
-            name  = "JWT_REFRESH_SECRET"
-            value = var.jwt_refresh_secret
+            name = "JWT_REFRESH_SECRET"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "JWT_REFRESH_SECRET"
+              }
+            }
           }
 
           env {
-            name  = "JWT_ACCESS_TTL"
-            value = var.jwt_access_ttl
+            name = "JWT_ACCESS_TTL"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "JWT_ACCESS_TTL"
+              }
+            }
           }
 
           env {
-            name  = "JWT_REFRESH_TTL"
-            value = var.jwt_refresh_ttl
+            name = "JWT_REFRESH_TTL"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "JWT_REFRESH_TTL"
+              }
+            }
           }
 
           env {
-            name  = "SEED_SUPERADMIN_EMAIL"
-            value = var.seed_superadmin_email
+            name = "SEED_SUPERADMIN_EMAIL"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "SEED_SUPERADMIN_EMAIL"
+              }
+            }
           }
 
           env {
-            name  = "SEED_SUPERADMIN_PASSWORD"
-            value = var.seed_superadmin_password
+            name = "SEED_SUPERADMIN_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "SEED_SUPERADMIN_PASSWORD"
+              }
+            }
           }
 
           env {
-            name  = "SEED_SUPERADMIN_NAME"
-            value = var.seed_superadmin_name
+            name = "SEED_SUPERADMIN_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.app.metadata[0].name
+                key  = "SEED_SUPERADMIN_NAME"
+              }
+            }
           }
 
           resources {

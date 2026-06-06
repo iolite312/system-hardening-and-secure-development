@@ -32,6 +32,21 @@ variable "service_type" {
   default     = "NodePort"
 }
 
+# Vault connection — Terraform uses these to write secrets into Vault and configure auth
+variable "vault_address" {
+  description = "Vault server address reachable from the host running Terraform"
+  type        = string
+  default     = "http://127.0.0.1:8200"
+}
+
+variable "vault_token" {
+  description = "Vault token used to bootstrap secrets (dev-mode root token is 'root')"
+  type        = string
+  sensitive   = true
+  default     = "root"
+}
+
+# Secret values — Terraform writes these into Vault; pods never receive them directly
 variable "postgres_password" {
   type      = string
   sensitive = true
@@ -46,11 +61,6 @@ variable "postgres_user" {
   type    = string
   default = "comic"
 }
-
-# variable "database_url" {
-#   type      = string
-#   sensitive = true
-# }
 
 variable "jwt_access_secret" {
   type      = string
