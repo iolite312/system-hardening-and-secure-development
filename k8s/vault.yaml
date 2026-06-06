@@ -78,8 +78,14 @@ spec:
             periodSeconds: 20
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             capabilities:
               add: ["IPC_LOCK"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: vault-logs
+              mountPath: /vault/logs
           resources:
             requests:
               cpu: "100m"
@@ -87,6 +93,11 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: vault-logs
+          emptyDir: {}
 ---
 # Internal service for pod-to-Vault communication
 apiVersion: v1
