@@ -191,3 +191,12 @@ Watchmen #2,Watchmen,2
 ├── drizzle.config.ts
 └── .env.example
 ```
+
+Commands
+
+```bash
+kubectl apply -f k8s/vault.yaml
+kubectl port-forward -n vault deploy/vault 8200:8200
+kubectl port-forward -n dev deploy/fullstack 3000:3000
+kubectl port-forward -n dev deploy/postgress 5432:5432
+```

@@ -60,7 +60,7 @@ resource "kubernetes_deployment" "postgres" {
 
         container {
           name              = "postgres"
-          image             = "postgres:17.5-alpine"
+          image             = "postgres:17.10-alpine"
           image_pull_policy = "Always"
 
           port {
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "postgres" {
           # $(POSTGRES_USER) is expanded by sh at runtime from the env var set above
           readiness_probe {
             exec {
-              command = ["sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
+              command = ["sh", "-c", "pg_isready -p 5432"]
             }
 
             initial_delay_seconds = 10
@@ -130,7 +130,7 @@ resource "kubernetes_deployment" "postgres" {
 
           liveness_probe {
             exec {
-              command = ["sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
+              command = ["sh", "-c", "pg_isready -p 5432"]
             }
 
             initial_delay_seconds = 30
@@ -203,16 +203,15 @@ resource "kubernetes_deployment" "fullstack" {
         }
 
         container {
-          name              = "fullstack"
-          image             = var.image
-          image_pull_policy = "Never"
+          name  = "fullstack"
+          image = var.image
 
           port {
             container_port = 3000
           }
 
           env {
-            name = "DATABASE_URL"
+            name = "NUXT_DATABASE_URL"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.app.metadata[0].name
@@ -222,7 +221,7 @@ resource "kubernetes_deployment" "fullstack" {
           }
 
           env {
-            name = "JWT_ACCESS_SECRET"
+            name = "NUXT_JWT_ACCESS_SECRET"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.app.metadata[0].name
@@ -232,7 +231,7 @@ resource "kubernetes_deployment" "fullstack" {
           }
 
           env {
-            name = "JWT_REFRESH_SECRET"
+            name = "NUXT_JWT_REFRESH_SECRET"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.app.metadata[0].name
@@ -242,7 +241,7 @@ resource "kubernetes_deployment" "fullstack" {
           }
 
           env {
-            name = "JWT_ACCESS_TTL"
+            name = "NUXT_JWT_ACCESS_TTL"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.app.metadata[0].name
@@ -252,7 +251,7 @@ resource "kubernetes_deployment" "fullstack" {
           }
 
           env {
-            name = "JWT_REFRESH_TTL"
+            name = "NUXT_JWT_REFRESH_TTL"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.app.metadata[0].name
