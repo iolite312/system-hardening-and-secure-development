@@ -55,6 +55,8 @@ spec:
               value: "0.0.0.0:8200"
             - name: VAULT_ADDR
               value: "http://127.0.0.1:8200"
+            - name: SKIP_SETCAP
+              value: "true"
           ports:
             - containerPort: 8200
               name: http
@@ -86,6 +88,8 @@ spec:
               mountPath: /tmp
             - name: vault-logs
               mountPath: /vault/logs
+            - name: vault-home
+              mountPath: /home/vault
           resources:
             requests:
               cpu: "100m"
@@ -97,6 +101,8 @@ spec:
         - name: tmp
           emptyDir: {}
         - name: vault-logs
+          emptyDir: {}
+        - name: vault-home
           emptyDir: {}
 ---
 # Internal service for pod-to-Vault communication

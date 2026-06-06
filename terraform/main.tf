@@ -205,6 +205,7 @@ resource "kubernetes_deployment" "fullstack" {
         container {
           name  = "fullstack"
           image = var.image
+          image_pull_policy = "Always"
 
           port {
             container_port = 3000
